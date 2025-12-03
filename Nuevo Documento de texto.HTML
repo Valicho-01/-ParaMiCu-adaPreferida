@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dedicatoria Especial</title>
+    <!-- Carga de Tailwind CSS para el estilo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Configuración de la fuente principal de la página */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fce9e9 0%, #ffe9f2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Estilo para el contenedor principal */
+        .dedication-card {
+            background-color: #ffffff;
+            box-shadow: 0 20px 25px -5px rgba(255, 105, 135, 0.3), 0 10px 10px -5px rgba(255, 105, 135, 0.2);
+            animation: fadeInScale 1.5s ease-out forwards;
+            opacity: 0;
+            max-width: 800px;
+        }
+
+        /* Fuente especial para el título y el mensaje */
+        .dedication-title, .dedication-message {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Animación para hacer aparecer el contenido de forma elegante */
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Estilo para el corazón (SVG inline) */
+        .heart-icon {
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        /* Animación de pulsación para el corazón */
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(1.1);
+                opacity: 0.9;
+            }
+        }
+        
+        /* Oculta la dedicatoria y la galería al inicio */
+        .hidden {
+            display: none;
+        }
+
+        /* Estilo para inputs */
+        .input-style {
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #fbcfe8;
+            border-radius: 8px;
+            width: 100%;
+            transition: border-color 0.3s;
+        }
+        .input-style:focus {
+            outline: none;
+            border-color: #ec4899;
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
+        }
+
+        /* ===== ESTILOS CONFETI ===== */
+        .confetti {
+            position: fixed;
+            width: 25px;
+            height: 25px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: confetti-fall 5s ease-in forwards;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotateZ(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotateZ(720deg);
+            }
+        }
+
+        /* --- ESTILOS OPTIMIZADOS PARA EL CARRUSEL 3D (10 FOTOS) --- */
+        .carousel-scene {
+            width: 400px; /* Ancho para el contenedor del carrusel */
+            height: 400px;
+            margin: 40px auto;
+            perspective: 1500px; /* Perspectiva más fuerte para mejor efecto 3D */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateY(0deg);
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Transición más dinámica al hacer click */
+        }
+        
+        /* Cada foto está separada por 360/10 = 36 grados */
+        .photo-item {
+            position: absolute;
+            width: 260px; /* Tamaño del marco polaroid */
+            height: 260px;
+            left: 50%;
+            top: 50%;
+            margin-left: -130px; /* Centra horizontalmente */
+            margin-top: -130px; /* Centra verticalmente */
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            backface-visibility: hidden;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+        }
+
+        .photo-item:hover {
+            filter: brightness(1.1);
+        }
+        
+        /* Transformaciones para posicionar las 10 fotos en un círculo perfecto */
+        /* 360/10 = 36 grados exactos entre cada foto */
+        .photo-item:nth-child(1) { transform: rotateY(0deg) translateZ(380px); }
+        .photo-item:nth-child(2) { transform: rotateY(36deg) translateZ(380px); }
+        .photo-item:nth-child(3) { transform: rotateY(72deg) translateZ(380px); }
+        .photo-item:nth-child(4) { transform: rotateY(108deg) translateZ(380px); }
+        .photo-item:nth-child(5) { transform: rotateY(144deg) translateZ(380px); }
+        .photo-item:nth-child(6) { transform: rotateY(180deg) translateZ(380px); }
+        .photo-item:nth-child(7) { transform: rotateY(216deg) translateZ(380px); }
+        .photo-item:nth-child(8) { transform: rotateY(252deg) translateZ(380px); }
+        .photo-item:nth-child(9) { transform: rotateY(288deg) translateZ(380px); }
+        .photo-item:nth-child(10) { transform: rotateY(324deg) translateZ(380px); }
+
+        /* Estilo para la foto seleccionada (más grande y con borde) */
+        .photo-item.active {
+            box-shadow: 0 0 0 8px #ec4899, 0 25px 40px rgba(0,0,0,0.5) !important; /* Sombra más fuerte al seleccionar */
+            filter: brightness(1.15);
+            z-index: 10;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+            display: block;
+        }
+
+        /* Estilo para el título en la parte inferior de la polaroid */
+        .polaroid-caption {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor Principal de la Interacción -->
+    <div class="dedication-card p-8 sm:p-12 w-full rounded-2xl text-center">
+        
+        <!-- 1. FORMULARIO DE ACCESO (PRIMERA SECCIÓN) -->
+        <div id="login-container">
+            <h1 class="dedication-title text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
+                ¡Tienes un Mensaje y Momentos Especiales Esperando!
+            </h1>
+            <p class="text-gray-600 mb-8">Ingresa tu nombre para comenzar la sorpresa.</p>
+            
+            <form id="dedication-form" class="text-left max-w-md mx-auto">
+                <label for="nameInput" class="block text-gray-700 font-semibold mb-2">Tu Nombre:</label>
+                <input type="text" id="nameInput" placeholder="Ej. Ana o Juan" class="input-style" required>
+
+                <label for="passwordInput" class="block text-gray-700 font-semibold mb-2">Clave Secreta:</label>
+                <!-- Usamos 'password' para que se vea como una clave, aunque aceptará cualquier texto -->
+                <input type="password" id="passwordInput" placeholder="Cualquier cosa sirve..." class="input-style" required>
+
+                <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-md hover:shadow-lg">
+                    Continuar
+                </button>
+                <p id="error-message" class="text-red-500 mt-4 hidden">Por favor, ingresa tu nombre.</p>
+            </form>
+        </div>
+
+        <!-- 2. MENSAJE DE BIENVENIDA CON CONFETI (PRIMERA SECCIÓN - Después del login) -->
+        <div id="welcome-section" class="hidden mt-12 pt-8 border-t border-pink-200 text-center">
+            <svg class="heart-icon w-12 h-12 mx-auto mb-6 text-pink-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+            </svg>
+
+            <h1 id="dedication-title-output" class="dedication-title text-4xl sm:text-5xl font-bold text-pink-600 mb-6">
+                ¡Hola!
+            </h1>
+
+            <p class="dedication-message text-xl sm:text-2xl italic text-gray-700 leading-relaxed mb-8">
+                "¡Gracias por ser la cuñada más especial y por tu apoyo incondicional! Espero que te guste."
+            </p>
+
+            <div class="text-center mt-8 mb-12">
+                <p class="text-base text-gray-500 mb-2">Tu "Contraseña Secreta" era:</p>
+                <p id="joke-output" class="text-2xl font-black text-pink-700">OYE, BÁÑATE</p>
+                <p class="text-lg font-semibold text-pink-400 mt-4">— ATT: Para mi Hija</p>
+            </div>
+
+            <button onclick="goToGallery()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 shadow-md hover:shadow-lg text-lg">
+                Ver Galería de Fotos
+            </button>
+        </div>
+
+        <!-- 2.5. MENSAJE DE PREPARACIÓN PARA LOS 30 (Entre dedicatoria y carrusel) -->
+        <div id="thirty-section" class="hidden mt-12 pt-8 border-t border-pink-200 text-center">
+            <p class="text-6xl mb-4">🤣</p>
+            <h2 class="dedication-title text-3xl sm:text-4xl font-bold text-pink-600 mb-6">
+                ¡Te acercas a los 30!
+            </h2>
+            <p class="text-xl sm:text-2xl italic text-gray-700 leading-relaxed mb-8">
+                "Prepárate para esta nueva década llena de aventuras, risas y momentos memorables. ¡Los treinta te quedan perfectos!"
+            </p>
+            <button onclick="continueToGallery()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 shadow-md hover:shadow-lg text-lg">
+                Continuar a la Galería
+            </button>
+        </div>
+
+        <!-- 3. GALERÍA DE FOTOS CON CARRUSEL (SEGUNDA SECCIÓN) -->
+        <div id="gallery-section" class="hidden mt-12 pt-8 border-t border-pink-200">
+            <h2 class="text-3xl font-bold text-pink-600 mb-6 dedication-title text-center">
+                ¡Feliz Cumpleaños Deysi Anahi Vargas!
+            </h2>
+            <p class="text-gray-600 mb-8 text-center">Haz clic en cada foto para ver una pequeña descripción y rotar el carrusel.</p>
+            
+            <!-- Escena 3D para el carrusel -->
+            <div class="carousel-scene">
+                <div id="carousel-container" class="carousel-container">
+                    
+                    <!-- Photo Item 1 -->
+                    <div id="photo-1" class="photo-item" 
+                         data-caption="Momento Especial 1"
+                         data-description="¡Qué momento tan especial! Este recuerdo es invaluable."
+                         data-note="Estoy profundamente agradecido/a de ser parte de esta familia. Cada momento compartido es un tesoro que guardaré por siempre en mi corazón. ¡Gracias por hacerme sentir en casa!"
+                         onclick="showDescription(this)">
+                        <img src="FOTOS/IMG_20240606_205807.jpg" alt="Foto 1" onerror="this.onerror=null;this.src='https://placehold.co/260x260/D90263/FFFFFF?text=FOTO+1'">
+                        <span class="polaroid-caption">Momento Especial 1</span>
+                    </div>
+                    
+                    <!-- Photo Item 2 -->
+                    <div id="photo-2" class="photo-item" 
+                         data-caption="Momento Especial 2"
+                         data-description="Un instante hermoso que guardará en mi corazón por siempre."
+                         data-note="Agradezco infinitamente poder formar parte de esta familia maravillosa. Sus gestos, su amor y su apoyo me hacen sentir verdaderamente especial. ¡Ustedes son mi inspiración diaria!"
+                         onclick="showDescription(this)">
+                        <img src="FOTOS/IMG_20240805_215556.jpg" alt="Foto 2" onerror="this.onerror=null;this.src='https://placehold.co/260x260/B7950B/FFFFFF?text=FOTO+2'">
+                        <span class="polaroid-caption">Momento Especial 2</span>
+                    </div>
+
+                    <!-- Photo Item 3 -->
+                    <div id="photo-3" class="photo-item" 
+                         data-caption="Momento Especial 3"
+                         data-description="¡Qué linda imagen! Este momento es perfecto."
+                         data-note="No tengo palabras suficientes para expresar mi gratitud. Ser parte de esta familia es un regalo que no esperaba"
+                         onclick="showDescription(this)">
+                        <img src="FOTOS/IMG_20250511_114835.jpg" alt="Foto 3" onerror="this.onerror=null;this.src='https://placehold.co/260x260/1B5E20/FFFFFF?text=FOTO+3'">
+                        <span class="polaroid-caption">Momento Especial 3</span>
+                    </div>
+
+                    <!-- Photo Item 4 -->
+                    <div id="photo-4" class="photo-item" 
+                         data-caption="Momento Especial 4"
+                         data-description="¡Un momento lleno de alegría y felicidad!"
+                         data-note="Tu risa, tu bondad y tu presencia hacen que los días sean mejores. Gracias por ser esa cuñada que nunca falla cuando te necesito. ¡Eres extraordinaria!"
+                         onclick="showDescription(this)">
+                        <img src="FOTOS/IMG_20250511_121020.jpg" alt="Foto 4" onerror="this.onerror=null;this.src='https://placehold.co/260x260/00796B/FFFFFF?text=FOTO+4'">
+                        <span class="polaroid-caption">Momento Especial 4</span>
+                    </div>
+                    
+                    <!-- Photo Item 5 -->
+                    <div id="photo-5" class="photo-item" 
+                         data-caption="Momento Especial 5"
+                         data-description="¡Qué suerte tenerte! Gracias por estos momentos inolvidables."
+                         data-note="En los buenos y malos tiempos, tu apoyo ha sido constante. Eso es lo que te hace especial, cuñada. ¡Gracias por creer en mí!"
+                         onclick="showDescription(this)">
+                        <img src="FOTOS/IMG_20250511_121025.jpg" alt="Foto 5" onerror="this.onerror=null;this.src='https://placehold.co/260x260/4A148C/FFFFFF?text=FOTO+5'">
+                        <span class="polaroid-caption">Momento Especial 5</span>
+                    </div>
+
+                    <!-- Photo Item 6 -->
+                    <div id="photo-6" class="photo-item" 
+                         data-caption="Momento Especial 6"
+                         data-description="Un recuerdo hermoso que siempre llevaré conmigo."
+                         data-note="Tener una cuñada como tú es un regalo que no merecía. Tu generosidad y amor me enseñan a ser mejor persona. ¡Eres mi inspiración!"
+                         onclick="showDescription(this)">
+                        <img src="FOTOS/WhatsApp Image 2025-11-15 at 19.51.10.jpeg" alt="Foto 6" onerror="this.onerror=null;this.src='https://placehold.co/260x260/FF6F00/FFFFFF?text=FOTO+6'">
+                        <span class="polaroid-caption">Momento Especial 6</span>
+                    </div>
+
+                    <!-- Photo Item 7 -->
+                    <div id="photo-7" class="photo-item" 
+                         data-caption="Momento Especial 7"
+                         data-description="El mejor cierre para esta galería especial. ¡Gracias por todo!"
+                         data-note="Deysi, cada foto aquí representa los momentos que has compartido conmigo. Tu apoyo en los tiempos oscuros me dio luz. ¡Eres verdaderamente especial!"
+                         onclick="showDescription(this)">
+                        <img src="FOTOS/WhatsApp Image 2025-11-30 at 17.34.03.jpeg" alt="Foto 7" onerror="this.onerror=null;this.src='https://placehold.co/260x260/6A1B9A/FFFFFF?text=FOTO+7'">
+                        <span class="polaroid-caption">Momento Especial 7</span>
+                    </div>
+
+                    <!-- Photo Item 8 (Duplicado de Foto 1) -->
+                    <div id="photo-8" class="photo-item" 
+                         data-caption="Momento Especial 1"
+                         data-description="¡Qué momento tan especial! Este recuerdo es invaluable."
+                         data-note="Tu bondad y lealtad son inquebrantables. Gracias por ser esa cuñada que apoya en todo momento. ¡Mi gratitud es infinita!"
+                         onclick="showDescription(this)">
+                        <img src="FOTOS/IMG_20240606_205807.jpg" alt="Foto 1" onerror="this.onerror=null;this.src='https://placehold.co/260x260/D90263/FFFFFF?text=FOTO+1'">
+                        <span class="polaroid-caption">Momento Especial 1</span>
+                    </div>
+
+                    <!-- Photo Item 9 (Duplicado de Foto 2) -->
+                    <div id="photo-9" class="photo-item" 
+                         data-caption="Momento Especial 2"
+                         data-description="Un instante hermoso que guardará en mi corazón por siempre."
+                         data-note="En los tiempos malos, fuiste mi roca. En los tiempos buenos, fuiste mi alegría. Eso es lo que eres para mí, cuñada. ¡Te amo!"
+                         onclick="showDescription(this)">
+                        <img src="FOTOS/IMG_20240805_215556.jpg" alt="Foto 2" onerror="this.onerror=null;this.src='https://placehold.co/260x260/B7950B/FFFFFF?text=FOTO+2'">
+                        <span class="polaroid-caption">Momento Especial 2</span>
+                    </div>
+
+                    <!-- Photo Item 10 (Duplicado de Foto 3) -->
+                    <div id="photo-10" class="photo-item" 
+                         data-caption="Momento Especial 3"
+                         data-description="¡Qué linda imagen! Este momento es perfecto."
+                         data-note="Cuando todo se pone difícil, tú estás ahí. Tu apoyo constante me da esperanza. Eres una bendición en mi vida, cuñada. ¡Te adoro!"
+                         onclick="showDescription(this)">
+                        <img src="FOTOS/IMG_20250511_114835.jpg" alt="Foto 3" onerror="this.onerror=null;this.src='https://placehold.co/260x260/1B5E20/FFFFFF?text=FOTO+3'">
+                        <span class="polaroid-caption">Momento Especial 3</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Área de Descripción (Debajo del Carrusel) -->
+            <div id="description-area" class="mt-8 p-8 bg-gradient-to-br from-pink-50 to-red-50 rounded-xl border-2 border-pink-300 hidden transition-all duration-500 ease-in-out max-w-2xl mx-auto shadow-xl">
+                <h3 class="text-2xl font-bold text-pink-600 mb-4" id="description-title"></h3>
+                <p id="selected-description" class="text-lg italic text-gray-700 mb-6"></p>
+                
+                <!-- Nota Especial -->
+                <div class="bg-white rounded-lg p-6 mb-6 border-l-4 border-pink-500 shadow-md">
+                    <p class="text-xl leading-relaxed text-gray-800 font-semibold italic" id="special-note"></p>
+                </div>
+                
+                <button onclick="hideDescription()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 shadow-lg">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+        <!-- FIN GALERÍA -->
+
+        <!-- 3. CONTENIDO DE LA DEDICATORIA FINAL (Se revela al ingresar el nombre - Inicialmente oculta) -->
+        <div id="dedication-container" class="hidden mt-12 pt-8 border-t border-pink-200">
+            <!-- Icono de Corazón -->
+            <svg class="heart-icon w-12 h-12 mx-auto mb-6 text-pink-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+            </svg>
+
+            <!-- Título/Nombre de la Persona Dedicada (Se llenará con JS) -->
+            <h1 id="dedication-title-output" class="dedication-title text-4xl sm:text-5xl font-bold text-pink-600 mb-6">
+                ¡Hola!
+            </h1>
+
+            <!-- Mensaje de Dedicatoria (Tu mensaje especial) -->
+            <p class="dedication-message text-xl sm:text-2xl italic text-gray-700 leading-relaxed mb-8">
+                "¡Gracias por ser la cuñada más especial y por tu apoyo incondicional! Espero que te guste."
+            </p>
+
+            <!-- Firma/Remitente (La broma y la firma) -->
+            <div class="text-right mt-6 pt-4 border-t border-pink-100 max-w-md mx-auto">
+                <p class="text-base text-gray-500 mb-2">
+                    Tu "Contraseña Secreta" era:
+                </p>
+                <p id="joke-output" class="text-2xl font-black text-pink-700">
+                    OYE, BÁÑATE
+                </p>
+                <p class="text-lg font-semibold text-pink-400 mt-4">
+                    — ATT: Para mi Hija
+                </p>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Lógica JavaScript para manejar el flujo y el carrusel -->
+    <script>
+        let currentActivePhoto = null;
+        const carousel = document.getElementById('carousel-container');
+        const items = document.querySelectorAll('.photo-item');
+        const anglePerItem = 360 / items.length; // 360 / 10 = 36 grados
+
+        // --------------------------------------------------------
+        // FUNCIÓN 0: Crea confeti de celebración (GRANDE Y CONTINUO)
+        // --------------------------------------------------------
+        let confettiInterval = null;
+        
+        function createConfetti() {
+            const colors = ['#ec4899', '#f472b6', '#fbcfe8', '#fca5a5', '#fbbf24', '#fcd34d', '#a78bfa', '#c084fc', '#fb7185', '#fda4af'];
+            
+            for (let i = 0; i < 40; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = -50 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 2 + 4) + 's';
+                confetti.style.animationDelay = Math.random() * 0.3 + 's';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0%';
+                confetti.style.width = (Math.random() * 15 + 20) + 'px';
+                confetti.style.height = (Math.random() * 15 + 20) + 'px';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 6500);
+            }
+        }
+
+        function startContinuousConfetti() {
+            // Lanzar confeti inmediatamente
+            createConfetti();
+            
+            // Lanzar confeti cada 1 segundo
+            confettiInterval = setInterval(() => {
+                createConfetti();
+            }, 1000);
+        }
+
+        function stopContinuousConfetti() {
+            if (confettiInterval) {
+                clearInterval(confettiInterval);
+                confettiInterval = null;
+            }
+        }
+
+        // --------------------------------------------------------
+        // FUNCIÓN 1: Maneja el inicio de sesión (Revela el Mensaje)
+        // --------------------------------------------------------
+        document.getElementById('dedication-form').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+
+            const nameInput = document.getElementById('nameInput');
+            const loginContainer = document.getElementById('login-container');
+            const welcomeSection = document.getElementById('welcome-section');
+            const errorMessage = document.getElementById('error-message');
+            
+            const userName = nameInput.value.trim();
+            const jokePassword = "OYE, BÁÑATE"; 
+
+            if (userName === "") {
+                errorMessage.classList.remove('hidden');
+                return;
+            } else {
+                errorMessage.classList.add('hidden');
+            }
+
+            // ¡¡INICIAR LLUVIA DE CONFETI CONTINUA!!
+            startContinuousConfetti();
+
+            // Oculta el formulario de login y muestra el mensaje de bienvenida
+            loginContainer.classList.add('hidden');
+            welcomeSection.classList.remove('hidden');
+
+            // Prepara el mensaje final 
+            document.getElementById('dedication-title-output').textContent = `¡Hola, ${userName}!`;
+            document.getElementById('joke-output').textContent = jokePassword;
+
+            // Desplazar la vista al mensaje de bienvenida
+            setTimeout(() => {
+                 welcomeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        });
+
+        // --------------------------------------------------------
+        // FUNCIÓN 1.5: Ir a la galería de fotos
+        // --------------------------------------------------------
+        function goToGallery() {
+            const welcomeSection = document.getElementById('welcome-section');
+            const thirtySection = document.getElementById('thirty-section');
+            
+            welcomeSection.classList.add('hidden');
+            thirtySection.classList.remove('hidden');
+            
+            setTimeout(() => {
+                thirtySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        }
+
+        // --------------------------------------------------------
+        // FUNCIÓN 1.6: Continuar desde los 30 al carrusel
+        // --------------------------------------------------------
+        function continueToGallery() {
+            const thirtySection = document.getElementById('thirty-section');
+            const gallerySection = document.getElementById('gallery-section');
+            
+            thirtySection.classList.add('hidden');
+            gallerySection.classList.remove('hidden');
+            
+            setTimeout(() => {
+                gallerySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        }
+        
+        // --------------------------------------------------------
+        // FUNCIÓN 2: Muestra la descripción y rota el carrusel
+        // --------------------------------------------------------
+        function showDescription(photoElement) {
+            const descriptionArea = document.getElementById('description-area');
+            const descriptionTitle = document.getElementById('description-title');
+            const selectedDescription = document.getElementById('selected-description');
+            const specialNote = document.getElementById('special-note');
+            
+            // 1. Limpiar el estado activo anterior
+            if (currentActivePhoto) {
+                currentActivePhoto.classList.remove('active');
+            }
+            
+            // 2. Si la foto seleccionada es la misma que la actual (Minimizar/Ocultar)
+            if (photoElement === currentActivePhoto) {
+                hideDescription();
+                return;
+            }
+
+            // --- LÓGICA DEL CARRUSEL: Rotar para centrar la foto ---
+            const index = Array.from(items).indexOf(photoElement);
+            const rotationAngle = -index * anglePerItem;
+            // Aplicamos la rotación inmediatamente para centrar la imagen
+            carousel.style.transform = `rotateY(${rotationAngle}deg)`;
+            
+            // 3. Establecer la nueva foto activa (se agranda por CSS)
+            currentActivePhoto = photoElement;
+            photoElement.classList.add('active');
+
+            // 4. Obtener el texto y actualizar el área de descripción
+            const captionText = photoElement.getAttribute('data-caption');
+            const descriptionText = photoElement.getAttribute('data-description');
+            const noteText = photoElement.getAttribute('data-note');
+            
+            descriptionTitle.textContent = captionText;
+            selectedDescription.textContent = descriptionText;
+            specialNote.textContent = noteText;
+            
+            // 5. Mostrar el área de descripción
+            descriptionArea.classList.remove('hidden');
+
+            // Desplazar la vista al área de descripción
+            setTimeout(() => {
+                 descriptionArea.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 300);
+        }
+
+        // --------------------------------------------------------
+        // FUNCIÓN 3: Oculta la descripción (Minimizar)
+        // --------------------------------------------------------
+        function hideDescription() {
+            const descriptionArea = document.getElementById('description-area');
+
+            descriptionArea.classList.add('hidden');
+            
+            if (currentActivePhoto) {
+                currentActivePhoto.classList.remove('active');
+                currentActivePhoto = null;
+            }
+        }
+    </script>
+
+</body>
+</html>
